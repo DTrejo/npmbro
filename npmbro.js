@@ -1,18 +1,6 @@
-var re =
-  { search: /npm\s+search\s+((?:[a-z0-9_-]*))/
-  , install: /npm\s+install\s+((?:[a-z0-9_-]*))/
-  , docs: /npm\s+docs\s+((?:[a-z0-9_-]*))/
-  }
-var bro =
-  { re: re
-  , search: search
-  , docs: docs
-  , install: docs
-  }
-
-module.exports = bro
-
 var jerk = require('jerk')
+var npm = require('npm')
+var EventEmitter = require('events').EventEmitter
 var options =
   { server: 'irc.freenode.net'
   , nick: 'npmbro'
@@ -22,20 +10,27 @@ var options =
     ]
   }
 
-function handlers(j) {
+var re =
+  { search: /npm search ((?:[a-z0-9_ -]*))/
+  , install: /npm install ((?:[a-z0-9_ -]*))/
+  , docs: /npm docs ((?:[a-z0-9_ -]*))/
+  }
 
-  j.watch_for('soup', function(message) {
-    message.say(message.user + ': soup is good food!')
-  })
-  j.watch_for(re.search, search)
-  j.watch_for(re.install, install)
-  j.watch_for(re.docs, docs)
-}
+var bro = new EventEmitter()
+bro.re = re
+bro.search = search
+bro.docs = docs
+bro.install = docs // alias
 
-function search (m) {
-  var reply = m.user + ': you searched for ' + m.match_data[1] + '.'
-  m.say(reply)
-  return reply
+module.exports = bro
+
+function search (m, cb) {
+  // return npm.commands.search(['some', 'args'], function (er, data) {
+    // if (er) throw new Error(er.message)
+    var reply = m.user + ': you searched for ' + m.match_data[1] + '.'
+    m.say(reply)
+    return cb(null, reply)
+  // })
 }
 
 function install (m) {
@@ -47,6 +42,22 @@ function docs (m) {
   return reply
 }
 
-if (!module.parent) {
-  jerk(handlers).connect(options)
+function handlers(j) {
+  j.watch_for(re.search, search)
+  j.watch_for(re.install, install)
+  j.watch_for(re.docs, docs)
 }
+
+if (!module.parent) {
+  bro.on('load', function (npm) {
+    jerk(handlers).connect(options)
+  })
+}
+
+npm.load({}, function (er) {
+  if (er) throw new Error(er.message)
+  npm.on('log', function (m) {
+    console.log(m)
+  })
+  bro.emit('load', npm)
+})

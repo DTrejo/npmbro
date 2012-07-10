@@ -23,5 +23,8 @@
   "dependencies": {
     "jerk": "~1.1.23",
     "npm": "~1.1.36"
+  },
+  "devDependencies": {
+    "specify": "~0.4.1"
   }
 }
