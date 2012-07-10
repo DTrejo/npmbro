@@ -21,6 +21,7 @@
   "author": "David Trejo",
   "license": "MIT",
   "dependencies": {
-    "jerk": "~1.1.23"
+    "jerk": "~1.1.23",
+    "npm": "~1.1.36"
   }
 }

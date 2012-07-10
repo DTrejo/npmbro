@@ -1,19 +1,52 @@
-var jerk = require('jerk')
+var re =
+  { search: /npm\s+search\s+((?:[a-z0-9_-]*))/
+  , install: /npm\s+install\s+((?:[a-z0-9_-]*))/
+  , docs: /npm\s+docs\s+((?:[a-z0-9_-]*))/
+  }
+var bro =
+  { re: re
+  , search: search
+  , docs: docs
+  , install: docs
+  }
 
+module.exports = bro
+
+var jerk = require('jerk')
 var options =
   { server: 'irc.freenode.net'
   , nick: 'npmbro'
-  , channels: [ '#dtrejo', '#node.js' ]
+  , channels:
+    [ '#dtrejo'
+    // , '#node.js'
+    ]
   }
 
-jerk(function(j) {
+function handlers(j) {
 
   j.watch_for('soup', function(message) {
     message.say(message.user + ': soup is good food!')
   })
+  j.watch_for(re.search, search)
+  j.watch_for(re.install, install)
+  j.watch_for(re.docs, docs)
+}
 
-  j.watch_for(/^(.+) are silly$/, function(message) {
-    message.say(message.user + ': ' + message.match_data[1] + ' are NOT SILLY. Don\'t joke!')
-  })
+function search (m) {
+  var reply = m.user + ': you searched for ' + m.match_data[1] + '.'
+  m.say(reply)
+  return reply
+}
 
-}).connect(options)
+function install (m) {
+  return docs(m)
+}
+function docs (m) {
+  var reply = m.user + ': here\'s the url for ' + m.match_data[1] + '.'
+  m.say(reply)
+  return reply
+}
+
+if (!module.parent) {
+  jerk(handlers).connect(options)
+}
