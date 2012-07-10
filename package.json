@@ -1,0 +1,26 @@
+{
+  "name": "npmbro",
+  "version": "0.0.0",
+  "description": "irc bot that runs npm commands for you while you bro out",
+  "main": "npmbro.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "n/a"
+  },
+  "keywords": [
+    "irc",
+    "bot",
+    "npm",
+    "bro",
+    "npmbro",
+    "#node.js"
+  ],
+  "author": "David Trejo",
+  "license": "MIT",
+  "dependencies": {
+    "jerk": "~1.1.23"
+  }
+}
