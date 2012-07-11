@@ -1,56 +1,56 @@
 var jerk = require('jerk')
-var npm = require('npm')
-var EventEmitter = require('events').EventEmitter
-var options =
-  { server: 'irc.freenode.net'
-  , nick: 'npmbro'
-  , channels:
-    [ '#dtrejo'
-    // , '#node.js'
-    ]
-  }
+  , npm = require('npm')
+  , EventEmitter = require('events').EventEmitter
+  , SEARCH = 'http://eirikb.github.com/nipster/#'
+  , options =
+    { server: 'irc.freenode.net'
+    , nick: 'npmbro'
+    , channels:
+      [ '#dtrejo'
+      // , '#node.js'
+      ]
+    }
+  , bro = new EventEmitter()
+  , routes =
+    { search: function search (m) {
+        m.match_data[1] = m.match_data[1].replace('npm search', '')
+        var reply = m.user + ': Please see ' + SEARCH
+        + encodeURIComponent(m.match_data[1]) + ' .'
+        m.say(reply)
+        return reply
+      }
+    , docs: function docs (m) {
+        var reply = m.user + ': Please see ' + m.match_data[1] + '.'
+        m.say(reply)
+        return reply
+      }
+    , help: function help (m) {
+        var reply = m.user + ': Please see https://duckduckgo.com/?q='
+          + encodeURIComponent('site:http://npmjs.org/doc/ ' + m.match_data[1])
+        m.say(reply)
+        return reply
+      }
+    }
 
-var re =
-  { search: /npm search ((?:[a-z0-9_ -]*))/
-  , install: /npm install ((?:[a-z0-9_ -]*))/
-  , docs: /npm docs ((?:[a-z0-9_ -]*))/
-  }
-
-var bro = new EventEmitter()
-bro.re = re
-bro.search = search
-bro.docs = docs
-bro.install = docs // alias
-
+bro.routes = routes
+bro.router = router
 module.exports = bro
 
-function search (m, cb) {
-  // return npm.commands.search(['some', 'args'], function (er, data) {
-    // if (er) throw new Error(er.message)
-    var reply = m.user + ': you searched for ' + m.match_data[1] + '.'
-    m.say(reply)
-    return cb(null, reply)
-  // })
-}
-
-function install (m) {
-  return docs(m)
-}
-function docs (m) {
-  var reply = m.user + ': here\'s the url for ' + m.match_data[1] + '.'
-  m.say(reply)
-  return reply
-}
-
-function handlers(j) {
-  j.watch_for(re.search, search)
-  j.watch_for(re.install, install)
-  j.watch_for(re.docs, docs)
+function router (m, npm) {
+  m.match_data = m.source.match(/(?:npm(?:bro)?) (((?:[a-z0-9_ -]*)))/)
+  var cmd = ((m.match_data[1] || '').split(' ') || [])[0]
+  var route = routes[cmd]
+  if (route) return route(m, npm)
+  else return routes.help(m, npm)
 }
 
 if (!module.parent) {
   bro.on('load', function (npm) {
-    jerk(handlers).connect(options)
+    jerk(function (j) {
+      j.watch_for(/(?:npm(?:bro)?)/, function (m) {
+        router(m, npm)
+      })
+    }).connect(options)
   })
 }
 
