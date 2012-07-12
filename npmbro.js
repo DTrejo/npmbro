@@ -119,7 +119,7 @@ bro.router = router
 module.exports = bro
 
 function router (m, cb) {
-  m.match_data = m.text[0].match(/(?:npm(?:bro)?) (((?:[a-z0-9_ -]*)))/)
+  m.match_data = m.text[0].match(/(?:npm(?:bro)?) (((?:[a-z0-9A-Z_ -]*)))/)
   if (!m.match_data) {
     var reply = 'npmbro usage: '
       + '`npm <command> <arguments ...>`'
