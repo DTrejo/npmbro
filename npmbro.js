@@ -12,6 +12,7 @@ var jerk = require('jerk')
     , channels:
       [ '#dtrejo'
       , '#node.js'
+      , '#nodejitsu'
       ]
     }
   , bro = new EventEmitter()
