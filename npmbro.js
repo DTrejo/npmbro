@@ -147,3 +147,7 @@ if (!module.parent) {
     })
   }).connect(options)
 }
+
+http.createServer(function (req, res) {
+  res.end('Yes, I am alive and well!')
+}).listen(8000)
