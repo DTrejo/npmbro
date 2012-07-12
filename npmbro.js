@@ -121,7 +121,7 @@ function router (m, cb) {
       + '`npm <command> <arguments ...>`'
       + ' For more information on npmbro, see'
       + ' https://github.com/DTrejo/npmbro or run'
-      + ' `npm credits`.                         '
+      + ' `npm credits`. Powered by http://jit.su/                         '
       + ' Available commands: '
       + Object.keys(routes).map(function(r) {
           return 'npm ' + r
