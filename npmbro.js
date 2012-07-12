@@ -121,13 +121,13 @@ module.exports = bro
 function router (m, cb) {
   m.match_data = m.text[0].match(/(?:npm(?:bro)?) (((?:[a-z0-9A-Z_ -]*)))/)
   if (!m.match_data) {
-    var reply = 'npmbro usage: '
-      + '`npm <command> <arguments ...>`'
-      + ' For more information on npmbro, see'
-      + ' https://github.com/DTrejo/npmbro or run'
-      + ' `npm credits`. Powered by http://jit.su/                         '
+    var reply = 'Powered by http://jit.su/        '
       + ' Available commands: '
-      + Object.keys(routes).map(function(r) {
+      + Object.keys(routes)
+        .filter(function (r) {
+          return r.indexOf('dtrejo') === -1
+        })
+        .map(function(r) {
           return 'npm ' + r
         }).join(' | ')
     m.say(reply)
