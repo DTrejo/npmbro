@@ -6,14 +6,14 @@ var specify = require('specify')
   , noop = function () {}
   , searches =
     [ 'npm search dude'
-    , 'npm search bro'
-    , '   npm search bro'
+    , 'npm search gss'
+    , '   npm search everyauth'
     , 'npm search    kgoiewjgwre998932nnlj'
     , 'npm search osdignsd-'
     , 'npm search 23949---_9'
     , 'npm search 42'
-    , 'npm search hello world'
-    , 'npm search lotsa white at the end    '
+    , 'npm search run npm'
+    , 'npm search god forever substack dtrejo twitter    '
     ]
 /*
 npm search dude
@@ -46,38 +46,34 @@ function message (s) {
 };
 
 specify('search', function (a) {
-  a.expect(searches.length * 3)
+  a.expect(searches.length)
   searches.forEach(function (s) {
     var m = message(s)
-    var reply = router(m, npm)
-    a.ok(reply)
+    var reply = router(m)
     console.log(m.source, '->', reply)
-    // a.ok(re.search.test(s))
-    // bro.search(message(s, re.search), function (er, reply) {
-    //   a.ok(!er)
-    //   console.log(reply)
-    //   a.ok(reply)
-    // })
+    a.ok(reply)
   });
 })
 
 specify('docs', function (a) {
-  a.expect(docs.length * 2)
+  a.expect(docs.length)
   docs.forEach(function (s) {
-    // a.ok(re.docs.test(s));
-    // var reply = bro.docs(message(s, re.docs))
-    // console.log(reply)
-    // a.ok(reply)
+    var m = message(s)
+    router(m, function(err, reply) {
+      a.ok(reply.indexOf('http'))
+      console.log(m.source, '->', reply)
+    })
+
   })
 })
 
 specify('help', function (a) {
-  a.expect(help.length * 2)
+  a.expect(help.length)
   help.forEach(function (s) {
-    // a.ok(re.docs.test(s));
-    // var reply = bro.docs(message(s, re.docs))
-    // console.log(reply)
-    // a.ok(reply)
+    var m = message(s)
+    var reply = router(m)
+    console.log(m.source, '->', reply)
+    a.ok(reply.indexOf('duckduckgo'))
   })
 })
 
