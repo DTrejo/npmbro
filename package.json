@@ -1,11 +1,11 @@
 {
   "name": "npmbro",
-  "version": "0.0.0",
+  "version": "0.0.0-3",
   "description": "irc bot that runs npm commands for you while you bro out",
   "main": "npmbro.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npmbro.js"
+    "start": "node npmbro.js"
   },
   "repository": {
     "type": "git",

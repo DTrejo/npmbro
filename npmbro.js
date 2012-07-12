@@ -81,6 +81,9 @@ var jerk = require('jerk')
           + ' written by http://twitter.com/izs. Contribute to npmbro at'
           + ' https://github.com/DTrejo/npmbro.')
       }
+    , dtrejosaysyoushouldreallydie: function dtrejosaysyoushouldreallydie() {
+        process.exit(0)
+      }
     }
 
 // somewhat handy alias
