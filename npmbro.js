@@ -5,25 +5,31 @@ var jerk = require('jerk')
   , SEARCH = 'http://eirikb.github.com/nipster/#'
   , identity = function(e) { return (e || '').trim() }
   , isUrl = function(s) { return s.indexOf('http') > -1 }
+  , noop = function() {}
   , options =
     { server: 'irc.freenode.net'
     , nick: 'npmbro'
     , channels:
       [ '#dtrejo'
-      // , '#node.js'
+      , '#node.js'
       ]
     }
   , bro = new EventEmitter()
   , routes =
     { search: function search (m) {
-        m.match_data[1] = m.match_data[1].replace('search', '')
+        if (!m.match_data[1]) return
+
+        m.match_data[1] = m.match_data[1].replace('search', '').trim()
         var reply = m.user + ': Please see ' + SEARCH
-        + encodeURIComponent(m.match_data[1]) + ' .'
+        + encodeURIComponent(m.match_data[1])
         m.say(reply)
         return reply
       }
     // the only async fn, b/c calls out to npm
     , docs: function docs (m, cb) {
+        cb = cb || noop
+        if (!m.match_data[1]) return cb()
+
         var names =
           m.match_data[1].replace('docs', '')
           .split(' ')
@@ -31,7 +37,7 @@ var jerk = require('jerk')
 
         if (!names.length) {
           var reply = m.user + ': Usage is: npm docs <packagename>'
-          m.reply(reply)
+          m.say(reply)
           return cb(null, reply)
         }
 
@@ -54,15 +60,26 @@ var jerk = require('jerk')
         }
       }
     , help: function help (m) {
-        m.match_data[1] = m.match_data[1].replace('help', '')
-        var reply = m.user + ': Please see https://duckduckgo.com/?q='
+        if (!m.match_data[1]) return
+
+        m.match_data[1] = m.match_data[1].replace(/help search|help/, '').trim()
+        var reply = m.user + ': Please see npm\'s documentation at'
+          + ' https://duckduckgo.com/?q='
           + encodeURIComponent('site:http://npmjs.org/doc/ ' + m.match_data[1])
         m.say(reply)
         return reply
       }
+    , node: function node (m) {
+      var reply = m.user + ': Please ctrl-f or cmd-f through the node docs at'
+        + ' http://nodejs.org/docs/latest/api/all.html'
+      m.say(reply)
+      return reply
+    }
     , credits: function credits (m) {
-        m.say(m.user + ': npmbro written by http://twitter.com/ddtrejo, and'
-          + ' named by http://twitter.com/maxogden.')
+        m.say(m.user + ': npmbro was written by http://twitter.com/ddtrejo, and'
+          + ' named by http://twitter.com/maxogden. The original npm was'
+          + ' written by http://twitter.com/izs. Contribute to npmbro at'
+          + ' https://github.com/DTrejo/npmbro.')
       }
     }
 
@@ -94,18 +111,32 @@ bro.routes = routes
 bro.router = router
 module.exports = bro
 
-function router (m, npm, cb) {
-  m.match_data = m.source.match(/(?:npm(?:bro)?) (((?:[a-z0-9_ -]*)))/)
+function router (m, cb) {
+  m.match_data = m.text[0].match(/(?:npm(?:bro)?) (((?:[a-z0-9_ -]*)))/)
+  if (!m.match_data) {
+    var reply = 'npmbro usage: '
+      + '`npm <command> <arguments ...>`'
+      + ' For more information on npmbro, see'
+      + ' https://github.com/DTrejo/npmbro or run'
+      + ' `npm docs npmbro` or run `npm credits`.     '
+      + ' Available commands: '
+      + Object.keys(routes).map(function(r) {
+          return 'npm ' + r
+        }).join(' | ')
+    m.say(reply)
+    return cb()
+  }
   var cmd = ((m.match_data[1] || '').split(' ') || [])[0]
   var route = routes[cmd]
-  if (route) return route(m, npm, cb)
-  else return routes.help(m, npm, cb)
+  if (route) return route(m, cb)
+  else return routes.help(m, cb)
 }
 
 if (!module.parent) {
   jerk(function (j) {
-    j.watch_for(/(?:npm(?:bro)?)/, function (m) {
-      router(m, npm)
+    j.watch_for(/^(?:npm(?:bro)?)/, function (m) {
+      // console.log(m)
+      router(m, noop)
     })
   }).connect(options)
 }
