@@ -2,7 +2,6 @@ var specify = require('specify')
   , filters = process.argv.slice(2)
   , bro = require('./npmbro')
   , router = bro.router
-  , npm
   , noop = function () {}
   , searches =
     [ 'npm search dude'
@@ -77,7 +76,4 @@ specify('help', function (a) {
   })
 })
 
-bro.on('load', function (n) {
-  npm = n;
-  specify.run(filters)
-})
+specify.run(filters)

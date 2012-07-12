@@ -1,5 +1,4 @@
 var jerk = require('jerk')
-  , npm = require('npm')
   , async = require('async')
   , request = require('request')
   , EventEmitter = require('events').EventEmitter
@@ -104,19 +103,9 @@ function router (m, npm, cb) {
 }
 
 if (!module.parent) {
-  bro.on('load', function (npm) {
-    jerk(function (j) {
-      j.watch_for(/(?:npm(?:bro)?)/, function (m) {
-        router(m, npm)
-      })
-    }).connect(options)
-  })
+  jerk(function (j) {
+    j.watch_for(/(?:npm(?:bro)?)/, function (m) {
+      router(m, npm)
+    })
+  }).connect(options)
 }
-
-npm.load({}, function (er) {
-  if (er) throw new Error(er.message)
-  npm.on('log', function (m) {
-    console.log(m)
-  })
-  bro.emit('load', npm)
-})

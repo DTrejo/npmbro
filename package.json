@@ -22,7 +22,6 @@
   "license": "MIT",
   "dependencies": {
     "jerk": "~1.1.23",
-    "npm": "~1.1.36",
     "request": "~2.9.203",
     "async": "~0.1.22"
   },
