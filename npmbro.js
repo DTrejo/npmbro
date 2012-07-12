@@ -83,6 +83,9 @@ var jerk = require('jerk')
       }
     }
 
+// somewhat handy alias
+routes.install = routes.docs
+
 // lifted from @izs
 // https://github.com/isaacs/npm/blob/master/lib/docs.js
 function docsUrl(args, cb) {
@@ -118,7 +121,7 @@ function router (m, cb) {
       + '`npm <command> <arguments ...>`'
       + ' For more information on npmbro, see'
       + ' https://github.com/DTrejo/npmbro or run'
-      + ' `npm docs npmbro` or run `npm credits`.     '
+      + ' `npm credits`.                         '
       + ' Available commands: '
       + Object.keys(routes).map(function(r) {
           return 'npm ' + r

@@ -4,7 +4,8 @@
   "description": "irc bot that runs npm commands for you while you bro out",
   "main": "npmbro.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npmbro.js"
   },
   "repository": {
     "type": "git",
@@ -27,5 +28,9 @@
   },
   "devDependencies": {
     "specify": "~0.4.1"
+  },
+  "subdomain": "npmbro",
+  "engines": {
+    "node": "0.6.x"
   }
 }
