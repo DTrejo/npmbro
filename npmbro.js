@@ -2,6 +2,7 @@ var jerk = require('jerk')
   , async = require('async')
   , request = require('request')
   , EventEmitter = require('events').EventEmitter
+  , http = require('http')
   , SEARCH = 'http://eirikb.github.com/nipster/#'
   , identity = function(e) { return (e || '').trim() }
   , isUrl = function(s) { return s.indexOf('http') > -1 }
