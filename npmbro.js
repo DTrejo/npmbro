@@ -14,6 +14,7 @@ var jerk = require('jerk')
       [ '#dtrejo'
       , '#node.js'
       , '#nodejitsu'
+      , '#robotjs'
       ]
     }
   , bro = new EventEmitter()
