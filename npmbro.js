@@ -131,8 +131,12 @@ var jerk = require('jerk')
         + ' https://github.com/DTrejo/npmbro.')
     }
 
-  , dtrejosaysyoushouldreallydie = function dtrejosaysyoushouldreallydie() {
-      process.exit(0)
+  , dtrejosaysyoushouldreallydie: function dtrejosaysyoushouldreallydie(m) {
+      if (m.user === "DTrejo") {
+        m.say("Goodbye master.")
+        return process.exit(0)
+      }
+      m.say("Sorry, you're not special.")
     }
 
   , routes = {
