@@ -24,7 +24,8 @@
   "dependencies": {
     "jerk": "~1.1.23",
     "request": "~2.9.203",
-    "async": "~0.1.22"
+    "async": "~0.1.22",
+    "moment": "~1.6.2"
   },
   "devDependencies": {
     "specify": "~0.4.1"
