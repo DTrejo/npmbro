@@ -131,7 +131,7 @@ var jerk = require('jerk')
         + ' https://github.com/DTrejo/npmbro.')
     }
 
-  , dtrejosaysyoushouldreallydie: function dtrejosaysyoushouldreallydie(m) {
+  , dtrejosaysyoushouldreallydie = function dtrejosaysyoushouldreallydie (m) {
       if (m.user === "DTrejo") {
         m.say("Goodbye master.")
         return process.exit(0)
