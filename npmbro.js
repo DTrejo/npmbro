@@ -252,7 +252,9 @@ module.exports = bro
 
 function router (m, cb) {
   // ignore isaac shlueter so we don't clutter up conversations about npm
-  if (m.user.indexOf('isaacs') > -1) return
+  var containsIsaacs = m.user.indexOf('isaacs') > -1
+  var npmbroMentioned = m.text[0].indexOf('npmbro') > -1
+  if (containsIsaacs && !npmbroMentioned) return
 
   m.match_data = m.text[0].match(/(?:npm(?:bro)?) (((?:[a-z0-9A-Z_ -]*)))/)
   if (!m.match_data) {
