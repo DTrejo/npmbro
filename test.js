@@ -6,7 +6,7 @@ var specify = require('specify')
   , searches =
     [ 'npm search dude'
     , 'npm search gss'
-    , '   npm search everyauth'
+    // , '   npm search everyauth'
     , 'npm search    kgoiewjgwre998932nnlj'
     , 'npm search osdignsd-'
     , 'npm search 23949---_9'
@@ -41,6 +41,7 @@ function message (s) {
   , user: 'DTrejo'
   , source: s
   , say: noop
+  , text: [ s ]
   }
 };
 
@@ -48,7 +49,7 @@ specify('search', function (a) {
   a.expect(searches.length)
   searches.forEach(function (s) {
     var m = message(s)
-    var reply = router(m)
+    var reply = router(m, noop)
     console.log(m.source, '->', reply)
     a.ok(reply)
   });
@@ -59,7 +60,10 @@ specify('docs', function (a) {
   docs.forEach(function (s) {
     var m = message(s)
     router(m, function(err, reply) {
-      a.ok(reply.indexOf('http'))
+      if (err) a.ok(err)
+      else a.ok(reply.indexOf('http'))
+
+      reply = err || reply
       console.log(m.source, '->', reply)
     })
 
