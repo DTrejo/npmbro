@@ -7,12 +7,12 @@ var jerk = require('jerk')
   , SEARCH = 'http://eirikb.github.com/nipster/#'
   , options =
     { server: 'irc.freenode.net'
-    , nick: 'npmbrotest'
+    , nick: 'npmbro'
     , channels:
       [ '#dtrejo'
-      // , '#node.js'
-      // , '#nodejitsu'
-      // , '#robotjs'
+      , '#node.js'
+      , '#nodejitsu'
+      , '#robotjs'
       ]
     }
   , bro = new EventEmitter()
