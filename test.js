@@ -4,26 +4,24 @@ var specify = require('specify')
   , router = bro.router
   , noop = function () {}
   , searches =
-    [ 'npm search dude'
-    , 'npm search gss'
-    // , '   npm search everyauth'
-    , 'npm search    kgoiewjgwre998932nnlj'
-    , 'npm search osdignsd-'
-    , 'npm search 23949---_9'
-    , 'npm search 42'
-    , 'npm search run npm'
-    , 'npm search god forever substack dtrejo twitter    '
+    [ 'npmbro search dude'
+    , 'npmbro search gss'
+    , 'npmbro search    kgoiewjgwre998932nnlj'
+    , 'npmbro search osdignsd-'
+    , 'npmbro search 23949---_9'
+    , 'npmbro search 42'
+    , 'npmbro search run npm'
+    , 'npmbro search god forever substack dtrejo twitter    '
     ]
 /*
-npm search dude
-npm search bro
-   npm search bro
-npm search    kgoiewjgwre998932nnlj
-npm search osdignsd-
-npm search 23949---_9
-npm search 42
-npm search hello world
-npm search lotsa white at the end
+npmbro search dude
+npmbro search bro
+npmbro search    kgoiewjgwre998932nnlj
+npmbro search osdignsd-
+npmbro search 23949---_9
+npmbro search 42
+npmbro search hello world
+npmbro search lotsa white at the end
 */
 var docs = searches
   .map(function (s) {

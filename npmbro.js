@@ -3,8 +3,10 @@ var jerk = require('jerk')
   , request = require('request')
   , EventEmitter = require('events').EventEmitter
   , http = require('http')
+  , _ = require('underscore')
   , moment = require('moment')
   , SEARCH = 'http://eirikb.github.com/nipster/#'
+  , THROTTLE_DELAY = 4 * 1000
   , options =
     { server: 'irc.freenode.net'
     , nick: 'npmbro'
@@ -251,12 +253,7 @@ bro.router = router
 module.exports = bro
 
 function router (m, cb) {
-  // ignore isaac shlueter so we don't clutter up conversations about npm
-  var containsIsaacs = m.user.indexOf('isaacs') > -1
-  var npmbroMentioned = m.text[0].indexOf('npmbro') > -1
-  if (containsIsaacs && !npmbroMentioned) return
-
-  m.match_data = m.text[0].match(/(?:npm(?:bro)?) (((?:[a-z0-9A-Z_ -]*)))/)
+  m.match_data = m.text[0].match(/(?:npmbro) (((?:[a-z0-9A-Z_ -]*)))/)
   if (!m.match_data) {
     var reply = 'Powered by http://jit.su/        '
       + ' Available commands: '
@@ -278,8 +275,9 @@ function router (m, cb) {
 
 if (!module.parent) {
   jerk(function (j) {
-    j.watch_for(/^(?:npm(?:bro)?)/, function (m) {
+    j.watch_for(/^(?:npmbro)/, function (m) {
       // console.log(m)
+      m.say = _.throttle(m.say, THROTTLE_DELAY);
       router(m, noop)
     })
   }).connect(options)
