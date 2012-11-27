@@ -1,6 +1,6 @@
 {
   "name": "npmbro",
-  "version": "0.0.0-26",
+  "version": "1.0.0-0",
   "description": "irc bot that runs npm commands for you while you bro out",
   "main": "npmbro.js",
   "scripts": {
