@@ -15,6 +15,8 @@ var jerk = require('jerk')
       , '#node.js'
       , '#nodejitsu'
       , '#robotjs'
+      , '#voxel.js'
+      , '#nodecopter'
       ]
     }
   , bro = new EventEmitter()
